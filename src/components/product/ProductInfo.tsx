@@ -31,28 +31,28 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
   const formatPrice = (price: number) => {
     return `₹${price.toLocaleString()}`;
   };
-  return <div className="p-4">
-      <div className="flex items-start justify-between gap-3">
+  return <div className="p-2 sm:p-3">
+      <div className="flex items-start justify-between gap-2">
         <div className="flex-1">
-          <h1 className="text-xl font-bold text-foreground mb-2">{product.name}</h1>
-          <p className="text-sm text-muted-foreground mb-2">{product.brand}</p>
+          <h1 className="text-base sm:text-lg font-bold text-foreground mb-1">{product.name}</h1>
+          <p className="text-xs text-muted-foreground mb-1">{product.brand}</p>
         </div>
         
       </div>
 
-      {product.stock_quantity !== undefined && <div className="mb-3">
+      {product.stock_quantity !== undefined && <div className="mb-2">
           <StockBadge stockQuantity={product.stock_quantity} />
         </div>}
 
       {/* Price and Discount */}
-      <div className="flex items-center gap-3 mb-4">
-        <span className="text-2xl font-bold text-foreground">
+      <div className="flex items-center gap-2 mb-2 sm:mb-3">
+        <span className="text-lg sm:text-xl font-bold text-foreground">
           {formatPrice(product.price)}
         </span>
-        <span className="text-lg text-muted-foreground line-through">
+        <span className="text-sm sm:text-base text-muted-foreground line-through">
           {formatPrice(product.originalPrice)}
         </span>
-        <span className="text-sm text-success font-medium bg-success/10 px-2 py-1 rounded">
+        <span className="text-xs font-medium text-success bg-success/10 px-1.5 py-0.5 rounded">
           {product.discount}% off
         </span>
       </div>
@@ -64,7 +64,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
       
 
       {/* Free Delivery */}
-      {product.freeDelivery && <div className="text-success font-medium text-sm mb-2">
+      {product.freeDelivery && <div className="text-success font-medium text-xs mb-1">
           Free Delivery
         </div>}
     </div>;
