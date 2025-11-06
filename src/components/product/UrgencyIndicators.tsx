@@ -45,26 +45,26 @@ export const UrgencyIndicators: React.FC<UrgencyIndicatorsProps> = ({ productId 
   const formatTime = (num: number) => num.toString().padStart(2, '0');
 
   return (
-    <div className="p-4 space-y-3">
+    <div className="p-4 py-2 space-y-2">
       {/* Daily Sale Timer */}
-      <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-3 rounded-lg">
-        <div className="flex items-center gap-2 mb-1">
-          <Clock className="h-4 w-4" />
-          <span className="text-sm font-medium">Daily Sale Ends In:</span>
+      <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-2 rounded-lg">
+        <div className="flex items-center gap-1.5 mb-0.5">
+          <Clock className="h-3 w-3" />
+          <span className="text-xs font-medium">Daily Sale Ends In:</span>
         </div>
-        <div className="text-lg font-bold">
+        <div className="text-base font-bold">
           {formatTime(timeLeft.hours)}:{formatTime(timeLeft.minutes)}:{formatTime(timeLeft.seconds)}
         </div>
       </div>
 
       {/* Social Proof & Stock */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-1.5 text-sm text-orange-600 bg-orange-50 px-2 py-1 rounded">
-          <Users className="h-4 w-4" />
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
+          <Users className="h-3 w-3" />
           <span className="font-medium">{buyerCount} bought today</span>
         </div>
-        <div className="flex items-center gap-1.5 text-sm text-red-600 bg-red-50 px-2 py-1 rounded">
-          <TrendingUp className="h-4 w-4" />
+        <div className="flex items-center gap-1 text-xs text-red-600 bg-red-50 px-2 py-1 rounded">
+          <TrendingUp className="h-3 w-3" />
           <span className="font-medium">Only {stockLeft} left!</span>
         </div>
       </div>

@@ -92,7 +92,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
       {/* Free Delivery */}
       {product.freeDelivery && (
-        <div className="text-success font-medium text-sm mb-6">
+        <div className="text-success font-medium text-sm mb-2">
           Free Delivery
         </div>
       )}
