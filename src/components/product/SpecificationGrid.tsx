@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ChevronDown } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 interface SpecificationGridProps {
   specifications: Record<string, Record<string, any>> | Record<string, any>;
@@ -30,93 +35,58 @@ export const SpecificationGrid: React.FC<SpecificationGridProps> = ({ specificat
   };
 
   if (isStructured) {
-    // Render structured specifications with sections
+    // Render structured specifications with sections using accordion
+    const sections = Object.entries(specifications).filter(
+      ([_, sectionData]) => typeof sectionData === 'object' && sectionData !== null
+    );
+
     return (
-      <div className="space-y-6">
-        {Object.entries(specifications).map(([sectionName, sectionData]) => {
-          if (typeof sectionData !== 'object' || sectionData === null) return null;
-          
+      <Accordion type="multiple" defaultValue={sections.map(([name]) => name)} className="w-full">
+        {sections.map(([sectionName, sectionData]) => {
           const items = Object.entries(sectionData);
-          const showLimit = 8;
-          const isExpanded = expandedSections[sectionName] !== false;
-          const displayItems = isExpanded ? items : items.slice(0, showLimit);
-          const hasMore = items.length > showLimit;
 
           return (
-            <div key={sectionName} className="space-y-3">
-              <h3 className="font-semibold text-base text-foreground">{sectionName}</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
-                {displayItems.map(([key, value]) => (
-                  <div key={key} className="flex justify-between py-2 border-b border-border text-sm">
-                    <span className="text-muted-foreground">{key}</span>
-                    <span className="font-medium text-foreground text-right ml-4">{formatValue(value)}</span>
-                  </div>
-                ))}
-              </div>
-              {hasMore && (
-                <div className="flex justify-center pt-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => toggleSection(sectionName)}
-                    className="text-primary hover:text-primary"
-                  >
-                    {isExpanded ? (
-                      <>
-                        See Less <ChevronUp className="ml-1 h-4 w-4" />
-                      </>
-                    ) : (
-                      <>
-                        See More <ChevronDown className="ml-1 h-4 w-4" />
-                      </>
-                    )}
-                  </Button>
+            <AccordionItem key={sectionName} value={sectionName} className="border-b border-border">
+              <AccordionTrigger className="hover:no-underline py-4">
+                <h3 className="font-semibold text-base text-foreground text-left">{sectionName}</h3>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1 pb-4">
+                  {items.map(([key, value]) => (
+                    <div key={key} className="flex justify-between py-2 border-b border-border/50 text-sm">
+                      <span className="text-muted-foreground">{key}</span>
+                      <span className="font-medium text-foreground text-right ml-4">{formatValue(value)}</span>
+                    </div>
+                  ))}
                 </div>
-              )}
-            </div>
+              </AccordionContent>
+            </AccordionItem>
           );
         })}
-      </div>
+      </Accordion>
     );
   }
 
-  // Render flat specifications (backward compatibility)
+  // Render flat specifications (backward compatibility) with accordion
   const items = Object.entries(specifications);
-  const showLimit = 12;
-  const isExpanded = expandedSections['all'] !== false;
-  const displayItems = isExpanded ? items : items.slice(0, showLimit);
-  const hasMore = items.length > showLimit;
 
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
-        {displayItems.map(([key, value]) => (
-          <div key={key} className="flex justify-between py-2 border-b border-border text-sm">
-            <span className="text-muted-foreground">{key}</span>
-            <span className="font-medium text-foreground text-right ml-4">{formatValue(value)}</span>
+    <Accordion type="multiple" defaultValue={["all"]} className="w-full">
+      <AccordionItem value="all" className="border-b border-border">
+        <AccordionTrigger className="hover:no-underline py-4">
+          <h3 className="font-semibold text-base text-foreground text-left">Specifications</h3>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1 pb-4">
+            {items.map(([key, value]) => (
+              <div key={key} className="flex justify-between py-2 border-b border-border/50 text-sm">
+                <span className="text-muted-foreground">{key}</span>
+                <span className="font-medium text-foreground text-right ml-4">{formatValue(value)}</span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      {hasMore && (
-        <div className="flex justify-center pt-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => toggleSection('all')}
-            className="text-primary hover:text-primary"
-          >
-            {isExpanded ? (
-              <>
-                See Less <ChevronUp className="ml-1 h-4 w-4" />
-              </>
-            ) : (
-              <>
-                See More <ChevronDown className="ml-1 h-4 w-4" />
-              </>
-            )}
-          </Button>
-        </div>
-      )}
-    </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
