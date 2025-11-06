@@ -37,12 +37,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
           <h1 className="text-xl font-bold text-foreground mb-2">{product.name}</h1>
           <p className="text-sm text-muted-foreground mb-2">{product.brand}</p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="icon" className="rounded-full" onClick={handleWishlistClick}>
-            <Heart className={`h-5 w-5 ${inWishlist ? 'fill-red-500 text-red-500' : ''}`} />
-          </Button>
-          <ShareButton productName={product.name} />
-        </div>
+        
       </div>
 
       {product.stock_quantity !== undefined && <div className="mb-3">
@@ -66,15 +61,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
       {product.specialOffers && product.specialOffers.length > 0}
 
       {/* Rating */}
-      <div className="flex items-center gap-2 mb-4">
-        <div className="flex items-center gap-1 bg-success px-2 py-1 rounded text-success-foreground">
-          <span className="font-medium">{product.rating}</span>
-          <Star className="h-4 w-4 fill-current" />
-        </div>
-        <span className="text-sm text-muted-foreground">
-          {product.reviews.toLocaleString()} ratings and reviews
-        </span>
-      </div>
+      
 
       {/* Free Delivery */}
       {product.freeDelivery && <div className="text-success font-medium text-sm mb-2">
