@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { MapPin, Truck, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 export const DeliveryChecker: React.FC = () => {
   const [pincode, setPincode] = useState('');
@@ -28,52 +34,59 @@ export const DeliveryChecker: React.FC = () => {
   };
 
   return (
-    <div className="px-4 py-3 border-t border-border">
-      <div className="flex items-center gap-2 mb-3">
-        <MapPin className="w-4 h-4 text-muted-foreground" />
-        <h3 className="font-semibold text-foreground">Check Delivery</h3>
-      </div>
-      
-      <div className="flex gap-2">
-        <Input
-          type="text"
-          placeholder="Enter pincode"
-          value={pincode}
-          onChange={(e) => setPincode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-          maxLength={6}
-          className="flex-1"
-        />
-        <Button 
-          onClick={checkDelivery} 
-          disabled={pincode.length !== 6 || isChecking}
-          size="sm"
-        >
-          {isChecking ? 'Checking...' : 'Check'}
-        </Button>
-      </div>
-
-      {deliveryInfo && (
-        <div className="mt-3 space-y-2 text-sm">
-          {deliveryInfo.available ? (
-            <>
-              <div className="flex items-center gap-2 text-green-600">
-                <Truck className="w-4 h-4" />
-                <span>Delivery in {deliveryInfo.estimatedDays}-{deliveryInfo.estimatedDays + 2} days</span>
-              </div>
-              {deliveryInfo.cod && (
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Package className="w-4 h-4" />
-                  <span>Cash on Delivery available</span>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="text-destructive text-sm">
-              Delivery not available for this pincode
+    <div className="px-4">
+      <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value="delivery" className="border-b border-border">
+          <AccordionTrigger className="hover:no-underline py-4">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-muted-foreground" />
+              <h3 className="font-semibold text-base text-foreground">Check Delivery</h3>
             </div>
-          )}
-        </div>
-      )}
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="flex gap-2 mb-3">
+              <Input
+                type="text"
+                placeholder="Enter pincode"
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                maxLength={6}
+                className="flex-1"
+              />
+              <Button 
+                onClick={checkDelivery} 
+                disabled={pincode.length !== 6 || isChecking}
+                size="sm"
+              >
+                {isChecking ? 'Checking...' : 'Check'}
+              </Button>
+            </div>
+
+            {deliveryInfo && (
+              <div className="space-y-2 text-sm">
+                {deliveryInfo.available ? (
+                  <>
+                    <div className="flex items-center gap-2 text-green-600">
+                      <Truck className="w-4 h-4" />
+                      <span>Delivery in {deliveryInfo.estimatedDays}-{deliveryInfo.estimatedDays + 2} days</span>
+                    </div>
+                    {deliveryInfo.cod && (
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Package className="w-4 h-4" />
+                        <span>Cash on Delivery available</span>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="text-destructive text-sm">
+                    Delivery not available for this pincode
+                  </div>
+                )}
+              </div>
+            )}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 };

@@ -27,13 +27,13 @@ export const SizeSelector: React.FC<SizeSelectorProps> = ({
   
   return (
     <div className="flex-1">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1.5">
         {sizes.map((size) => (
           <Button
             key={size}
             variant={selectedSize === size ? "default" : "outline"}
             size="sm"
-            className="min-w-[48px]"
+            className="min-w-[40px] h-8 px-2 text-xs"
             onClick={() => onSizeChange(size)}
           >
             {size}

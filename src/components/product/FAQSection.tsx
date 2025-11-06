@@ -65,23 +65,30 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ category }) => {
   const faqs = getFAQs();
 
   return (
-    <div className="px-4 py-6 border-t border-border">
-      <div className="flex items-center gap-2 mb-4">
-        <HelpCircle className="w-5 h-5 text-primary" />
-        <h2 className="text-xl font-bold">Frequently Asked Questions</h2>
-      </div>
-      
+    <div className="px-4">
       <Accordion type="single" collapsible className="w-full">
-        {faqs.map((faq, index) => (
-          <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger className="text-left">
-              {faq.question}
-            </AccordionTrigger>
-            <AccordionContent className="text-muted-foreground">
-              {faq.answer}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
+        <AccordionItem value="faq" className="border-b border-border">
+          <AccordionTrigger className="hover:no-underline py-4">
+            <div className="flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold text-base text-foreground">Frequently Asked Questions</h3>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent>
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`} className="border-b border-border last:border-b-0">
+                  <AccordionTrigger className="text-left py-3">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
     </div>
   );
