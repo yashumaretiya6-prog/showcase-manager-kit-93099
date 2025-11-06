@@ -1,3 +1,42 @@
+export interface ProductVariant {
+  id: string;
+  sku: string;
+  color?: string;
+  colorHex?: string;
+  size?: string;
+  material?: string;
+  pattern?: string;
+  price?: number;
+  originalPrice?: number;
+  stock: number;
+  images?: string[];
+}
+
+export interface ColorOption {
+  name: string;
+  hex: string;
+  available: boolean;
+}
+
+export interface BulkDiscount {
+  minQuantity: number;
+  discountPercent: number;
+}
+
+export interface Review {
+  id: string;
+  userId: string;
+  userName: string;
+  userAvatar?: string;
+  rating: number;
+  title: string;
+  comment: string;
+  images?: string[];
+  isVerifiedPurchase: boolean;
+  helpful: number;
+  createdAt: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -16,6 +55,9 @@ export interface Product {
   specialOffers?: string[];
   sizes?: string[];
   colors?: string[];
+  colorOptions?: ColorOption[];
+  variants?: ProductVariant[];
+  bulkDiscounts?: BulkDiscount[];
   stock_quantity?: number;
   sku?: string;
   status?: 'active' | 'draft' | 'archived' | 'out_of_stock';
@@ -32,15 +74,24 @@ export interface Product {
     height: number;
     unit: 'cm' | 'in';
   };
+  warranty?: string;
+  returnPolicy?: string;
+  emiAvailable?: boolean;
+  codAvailable?: boolean;
+  reviews_data?: Review[];
 }
 
 export interface CartItem {
   id: string;
+  productId: string;
   name: string;
   price: number;
   image: string;
   quantity: number;
   selectedSize?: string;
+  selectedColor?: string;
+  selectedVariant?: ProductVariant;
+  maxQuantity?: number;
 }
 
 export interface Address {

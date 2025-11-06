@@ -1,33 +1,61 @@
 import React from 'react';
-import { Heart, Share, Star } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Star, Truck, Heart } from 'lucide-react';
 import { Product } from '@/types/product';
+import { Badge } from '@/components/ui/badge';
+import { useWishlist } from '@/context/WishlistContext';
+import { ShareButton } from './ShareButton';
+import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
+import { StockBadge } from './StockBadge';
 
 interface ProductInfoProps {
   product: Product;
 }
 
 export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { toast } = useToast();
+  const inWishlist = isInWishlist(product.id);
+
+  const handleWishlistClick = () => {
+    toggleWishlist(product);
+    toast({
+      title: inWishlist ? "Removed from wishlist" : "Added to wishlist",
+      description: inWishlist 
+        ? `${product.name} removed from your wishlist` 
+        : `${product.name} added to your wishlist`
+    });
+  };
+  
   const formatPrice = (price: number) => {
     return `₹${price.toLocaleString()}`;
   };
 
   return (
     <div className="p-4">
-      {/* Product Info */}
-      <div className="flex items-start justify-between mb-4">
-        <h1 className="text-xl font-semibold text-foreground flex-1 mr-4">
-          {product.name}
-        </h1>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1">
+          <h1 className="text-xl font-bold text-foreground mb-2">{product.name}</h1>
+          <p className="text-sm text-muted-foreground mb-2">{product.brand}</p>
+        </div>
         <div className="flex gap-2">
-          <Button variant="ghost" size="sm" className="p-2">
-            <Heart className="h-5 w-5" />
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="rounded-full"
+            onClick={handleWishlistClick}
+          >
+            <Heart className={`h-5 w-5 ${inWishlist ? 'fill-red-500 text-red-500' : ''}`} />
           </Button>
-          <Button variant="ghost" size="sm" className="p-2">
-            <Share className="h-5 w-5" />
-          </Button>
+          <ShareButton productName={product.name} />
         </div>
       </div>
+
+      {product.stock_quantity !== undefined && (
+        <div className="mb-3">
+          <StockBadge stockQuantity={product.stock_quantity} />
+        </div>
+      )}
 
       {/* Price and Discount */}
       <div className="flex items-center gap-3 mb-4">

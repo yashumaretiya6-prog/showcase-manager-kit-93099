@@ -26,35 +26,20 @@ export const SizeSelector: React.FC<SizeSelectorProps> = ({
   console.log('SizeSelector: Rendering with sizes:', sizes);
   
   return (
-    <div className="p-4 border-t bg-blue-50">
-      <div className="flex items-center gap-2 mb-3">
-        <Shirt className="w-4 h-4 text-blue-600" />
-        <h3 className="font-medium text-blue-800">Available Sizes</h3>
-        <Badge variant="secondary" className="text-xs">Clothing Item</Badge>
-      </div>
+    <div className="flex-1">
       <div className="flex flex-wrap gap-2">
         {sizes.map((size) => (
           <Button
             key={size}
             variant={selectedSize === size ? "default" : "outline"}
             size="sm"
-            className={`min-w-[48px] h-10 transition-all ${
-              selectedSize === size 
-                ? 'bg-blue-600 text-white border-blue-600 shadow-md' 
-                : 'border-blue-200 hover:border-blue-400 hover:bg-blue-50'
-            }`}
-            onClick={() => {
-              console.log('Size button clicked:', size);
-              onSizeChange(size);
-            }}
+            className="min-w-[48px]"
+            onClick={() => onSizeChange(size)}
           >
             {size}
           </Button>
         ))}
       </div>
-      <p className="text-xs text-blue-600 mt-2">
-        Select your preferred size for this clothing item
-      </p>
     </div>
   );
 };
