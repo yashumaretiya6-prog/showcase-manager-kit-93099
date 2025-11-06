@@ -94,7 +94,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
         />
 
         {/* Overlay Action Buttons */}
-        <div className="absolute top-2 right-2 flex flex-col gap-2">
+        <div className="absolute top-2 right-4 flex flex-col gap-2">
           {/* Rating Badge */}
           {rating && (
             <div className="flex items-center gap-1 bg-background/95 backdrop-blur-sm px-2 py-1 rounded-full shadow-lg text-xs">
