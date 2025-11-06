@@ -1,200 +1,291 @@
-import { useState } from "react";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { ProductForm } from "@/components/admin/ProductForm";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Search, TrendingUp, Package, TrendingDown, Star, Filter, Plus, MoreVertical, RefreshCw, Trash2, Edit } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Checkbox } from "@/components/ui/checkbox";
+import React, { useState } from 'react';
+import { Card } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
+import { useProducts } from '@/context/ProductContext';
+import { Product } from '@/types/product';
+import { ProductManagementHeader } from '@/components/admin/ProductManagementHeader';
+import { AddProductDialog } from '@/components/admin/AddProductDialog';
+import { ProductList } from '@/components/admin/ProductList';
+import { ProductService } from '@/services/productService';
+import { isClothingCategory, getClothingSizes } from '@/utils/categoryUtils';
+import { useProductFilters } from '@/hooks/useProductFilters';
+import { ColumnConfig } from '@/components/admin/filters/ColumnVisibility';
+import { AdminSidebar } from '@/components/admin/AdminSidebar';
 
-const ProductsManagement = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [products, setProducts] = useState([
-    {
-      id: "1",
-      name: "yashkumar umaretiya",
-      category: "Sarees",
-      brand: "SS",
-      price: 230,
-      originalPrice: 1225,
-      discount: 48,
-      rating: 4.4,
-      reviews: 0,
-      images: 2,
-      image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400",
-    },
-    {
-      id: "2",
-      name: "Floral Print Cotton Kurti",
-      category: "Kurtis",
-      brand: "Store Brand",
-      price: 499,
-      originalPrice: 999,
-      discount: 50,
-      rating: 4.5,
-      reviews: 234,
-      images: 2,
-      image: "https://images.unsplash.com/photo-1583391733981-8b1b29bdd2ca?w=400",
-    },
-    {
-      id: "3",
-      name: "Ethnic Embroidered Kurti",
-      category: "Kurtis",
-      brand: "Store Brand",
-      price: 799,
-      originalPrice: 1599,
-      discount: 50,
-      rating: 4.7,
-      reviews: 189,
-      images: 2,
-      image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400",
-    },
+const ProductsManagement: React.FC = () => {
+  const { toast } = useToast();
+  const { products, addProducts, deleteProduct, updateProduct, refreshProducts, loadMoreProducts, hasMore, loading } = useProducts();
+  const [isDeletingAll, setIsDeletingAll] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [newProduct, setNewProduct] = useState<Partial<Product>>({
+    name: '',
+    price: 0,
+    originalPrice: 0,
+    discount: 0,
+    image: '',
+    images: [],
+    category: '',
+    brand: '',
+    description: '',
+    rating: 4.0,
+    reviews: 0
+  });
+
+  const { filters, filteredProducts, updateFilters, availableCategories } = useProductFilters(products);
+
+  const [columns, setColumns] = useState<ColumnConfig[]>([
+    { id: 'image', label: 'Image', visible: true },
+    { id: 'name', label: 'Name', visible: true },
+    { id: 'price', label: 'Price', visible: true },
+    { id: 'category', label: 'Category', visible: true },
+    { id: 'stock', label: 'Stock', visible: true },
+    { id: 'rating', label: 'Rating', visible: true },
+    { id: 'status', label: 'Status', visible: true },
+    { id: 'actions', label: 'Actions', visible: true },
   ]);
 
-  const handleAddProduct = (productData: any) => {
-    console.log("Adding product:", productData);
-    setShowForm(false);
-    // Add product logic here
+  const handleColumnToggle = (columnId: string) => {
+    setColumns(prev => prev.map(col => 
+      col.id === columnId ? { ...col, visible: !col.visible } : col
+    ));
+  };
+
+  const handleResetColumns = () => {
+    setColumns(prev => prev.map(col => ({ ...col, visible: true })));
+  };
+
+  const handleRefresh = async () => {
+    try {
+      setIsRefreshing(true);
+      await refreshProducts();
+      toast({
+        title: "Products refreshed",
+        description: "Product list has been updated.",
+      });
+    } catch (error) {
+      toast({
+        title: "Refresh failed",
+        description: "Failed to refresh products.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      await deleteProduct(productId);
+      toast({
+        title: "Product deleted",
+        description: "Product has been removed successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Delete failed",
+        description: "Failed to delete product.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDeleteAllProducts = async () => {
+    try {
+      setIsDeletingAll(true);
+      await ProductService.deleteAllProducts();
+      await refreshProducts();
+      toast({
+        title: "All products deleted",
+        description: "Successfully deleted all products.",
+      });
+    } catch (error) {
+      toast({
+        title: "Delete all failed",
+        description: "Failed to delete all products.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsDeletingAll(false);
+    }
+  };
+
+  const handleAddProduct = async () => {
+    if (!newProduct.name || !newProduct.price) {
+      toast({
+        title: "Missing required fields",
+        description: "Product name and price are required.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const category = newProduct.category || 'General';
+      const isClothing = isClothingCategory(category, newProduct.description, newProduct.name);
+      const sizes = isClothing ? getClothingSizes() : undefined;
+
+      const price = Number(newProduct.price) || 0;
+      const originalPrice = Number(newProduct.originalPrice) || price;
+      const discount = originalPrice > price ? 
+        Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
+
+      const product: Product = {
+        id: crypto.randomUUID(),
+        name: newProduct.name!,
+        price: price,
+        originalPrice: originalPrice,
+        discount: discount,
+        image: newProduct.image || 'https://via.placeholder.com/300',
+        images: newProduct.images || [],
+        category: category,
+        brand: newProduct.brand || 'Generic',
+        description: newProduct.description || 'No description available',
+        rating: Number(newProduct.rating) || 4.0,
+        reviews: Number(newProduct.reviews) || 0,
+        freeDelivery: true,
+        specialOffers: [],
+        sizes: sizes
+      };
+
+      await addProducts([product]);
+      setNewProduct({
+        name: '',
+        price: 0,
+        originalPrice: 0,
+        discount: 0,
+        image: '',
+        images: [],
+        category: '',
+        brand: '',
+        description: '',
+        rating: 4.0,
+        reviews: 0
+      });
+      setShowAddDialog(false);
+      toast({
+        title: "Product added",
+        description: "New product has been added successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Add failed",
+        description: "Failed to add product.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleUpdateProduct = async () => {
+    if (!editingProduct) return;
+
+    try {
+      const isClothing = isClothingCategory(editingProduct.category, editingProduct.description, editingProduct.name);
+      
+      const price = Number(editingProduct.price) || 0;
+      const originalPrice = Number(editingProduct.originalPrice) || 0;
+      const discount = originalPrice > price ? 
+        Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
+      
+      const updatedProduct = {
+        ...editingProduct,
+        price: price,
+        originalPrice: originalPrice,
+        discount,
+        rating: Number(editingProduct.rating) || 4.0,
+        reviews: Number(editingProduct.reviews) || 0,
+        sizes: editingProduct.sizes || (isClothing ? getClothingSizes() : undefined)
+      };
+
+      await updateProduct(editingProduct.id, updatedProduct);
+      setEditingProduct(null);
+      toast({
+        title: "Product updated",
+        description: "Product has been updated successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Update failed",
+        description: "Failed to update product.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleBulkUpdate = async (productIds: string[], updates: Partial<Product>) => {
+    try {
+      await Promise.all(
+        productIds.map(id => updateProduct(id, updates))
+      );
+
+      toast({
+        title: "Bulk update completed",
+        description: `Successfully updated ${productIds.length} products.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Bulk update failed",
+        description: "Failed to update products.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
     <div className="flex min-h-screen bg-background">
       <AdminSidebar />
       
-      <div className="flex-1">
-        {/* Header */}
-        <header className="bg-card border-b border-border p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Products Management</h1>
-              <p className="text-muted-foreground">{products.length} total products</p>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground">
-                <Trash2 className="h-4 w-4 mr-2" />
-                Delete All
-              </Button>
-              <Button variant="outline">
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Refresh
-              </Button>
-              <Button onClick={() => setShowForm(true)} className="bg-primary hover:bg-primary/90">
-                <Plus className="h-4 w-4 mr-2" />
-                Add New Product
-              </Button>
-            </div>
-          </div>
+      <div className="flex-1 p-6 space-y-6">
+        <Card className="p-6">
+          <ProductManagementHeader 
+            onRefresh={handleRefresh}
+            isRefreshing={isRefreshing}
+            onDeleteAll={handleDeleteAllProducts}
+            isDeleting={isDeletingAll}
+            productCount={products.length}
+            filters={filters}
+            onFiltersChange={updateFilters}
+            categories={availableCategories}
+            columns={columns}
+            onColumnToggle={handleColumnToggle}
+            onResetColumns={handleResetColumns}
+          />
+        </Card>
 
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search products by name, category, brand, description..."
-              className="pl-10"
-            />
+        <div className="flex justify-between items-center">
+          <div className="text-sm text-muted-foreground">
+            {filteredProducts.length !== products.length && (
+              <span>Showing {filteredProducts.length} of {products.length} products</span>
+            )}
           </div>
-        </header>
-
-        {/* Filters */}
-        <div className="p-6 border-b border-border">
-          <div className="flex gap-4">
-            <Button variant="ghost" size="sm">
-              <TrendingUp className="h-4 w-4 mr-2" />
-              Best Sellers
-            </Button>
-            <Button variant="ghost" size="sm">
-              <Package className="h-4 w-4 mr-2" />
-              New Arrivals
-            </Button>
-            <Button variant="ghost" size="sm">
-              <TrendingDown className="h-4 w-4 mr-2" />
-              Low Stock
-            </Button>
-            <Button variant="ghost" size="sm">
-              <Star className="h-4 w-4 mr-2" />
-              Featured Products
-            </Button>
-          </div>
+          <AddProductDialog
+            showDialog={showAddDialog}
+            newProduct={newProduct}
+            onDialogChange={setShowAddDialog}
+            onProductChange={setNewProduct}
+            onSave={handleAddProduct}
+            onCancel={() => setShowAddDialog(false)}
+          />
         </div>
 
-        <div className="p-6 flex items-center justify-between border-b border-border">
-          <div className="flex items-center gap-4">
-            <Button variant="outline" size="sm">
-              <Filter className="h-4 w-4 mr-2" />
-              Filters
-            </Button>
-            <Button variant="outline" size="sm">
-              Sort: None
-            </Button>
-            <Button variant="outline" size="sm">
-              Columns (8/8)
-            </Button>
-          </div>
-        </div>
-
-        {/* Products List */}
-        <div className="p-6">
-          <div className="mb-4 flex items-center gap-3">
-            <Checkbox id="select-all" />
-            <label htmlFor="select-all" className="text-sm text-muted-foreground">
-              Select All ({products.length} selected)
-            </label>
-          </div>
-
-          <div className="space-y-3">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="bg-card rounded-lg border border-border p-4 hover:shadow-[var(--shadow-card)] transition-shadow"
-              >
-                <div className="flex items-center gap-4">
-                  <Checkbox />
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-foreground mb-1">{product.name}</h3>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                      <span>{product.category}</span>
-                      <span>•</span>
-                      <span>{product.brand}</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-bold text-foreground">₹{product.price}</span>
-                      <span className="text-sm text-muted-foreground line-through">₹{product.originalPrice}</span>
-                      <Badge className="bg-success text-success-foreground">{product.discount}% off</Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                      <span className="font-medium text-foreground">{product.rating}</span>
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {product.reviews} reviews
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {product.images} images
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="icon">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="icon" className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground">
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <Card className="p-6">
+          <ProductList
+            products={filteredProducts}
+            loading={loading}
+            hasMore={hasMore}
+            editingProduct={editingProduct}
+            onLoadMore={loadMoreProducts}
+            onEdit={setEditingProduct}
+            onDelete={handleDeleteProduct}
+            onUpdate={handleUpdateProduct}
+            onCancelEdit={() => setEditingProduct(null)}
+            onProductChange={(updatedProduct) => setEditingProduct(prev => prev ? { ...prev, ...updatedProduct } : null)}
+            onBulkUpdate={handleBulkUpdate}
+            visibleColumns={columns}
+          />
+        </Card>
       </div>
-
-      {showForm && <ProductForm onClose={() => setShowForm(false)} onSubmit={handleAddProduct} />}
     </div>
   );
 };
