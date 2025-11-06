@@ -1,0 +1,277 @@
+import { Product } from '@/types/product';
+
+export const mockProducts: Product[] = [
+  // Electronics
+  {
+    id: 'prod-1',
+    name: 'Samsung Galaxy S24 Ultra',
+    description: '6.8" Dynamic AMOLED display, 200MP camera, Snapdragon 8 Gen 3 processor',
+    price: 124999,
+    originalPrice: 149999,
+    discount: 17,
+    category: 'Electronics',
+    brand: 'Samsung',
+    image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500',
+    images: ['https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500'],
+    rating: 4.8,
+    reviews: 3420,
+    colors: ['Titanium Black', 'Titanium Gray', 'Titanium Violet'],
+    specifications: {
+      'Screen Size': '6.8 inch',
+      'RAM': '12GB',
+      'Storage': '256GB',
+      'Battery': '5000mAh',
+      'Camera': '200MP + 50MP + 12MP + 10MP'
+    },
+    stock_quantity: 45,
+    featured: true,
+    freeDelivery: true,
+    specialOffers: ['Free Galaxy Buds', 'Extended Warranty'],
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'prod-2',
+    name: 'Apple iPhone 15 Pro',
+    description: 'A17 Pro chip, Titanium design, 48MP Main camera, USB-C',
+    price: 134900,
+    originalPrice: 144900,
+    discount: 7,
+    category: 'Electronics',
+    brand: 'Apple',
+    image: 'https://images.unsplash.com/photo-1696446702183-cbd8cf3e0d32?w=500',
+    images: ['https://images.unsplash.com/photo-1696446702183-cbd8cf3e0d32?w=500'],
+    rating: 4.9,
+    reviews: 5240,
+    colors: ['Natural Titanium', 'Blue Titanium', 'White Titanium', 'Black Titanium'],
+    specifications: {
+      'Chip': 'A17 Pro',
+      'Display': '6.1-inch Super Retina XDR',
+      'Storage': '256GB',
+      'Camera': '48MP Main, 12MP Ultra Wide, 12MP Telephoto'
+    },
+    stock_quantity: 32,
+    featured: true,
+    freeDelivery: true,
+    specialOffers: ['AppleCare+ Discount', 'Trade-in Offer'],
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'prod-3',
+    name: 'Sony WH-1000XM5 Headphones',
+    description: 'Industry-leading noise cancellation, 30-hour battery life, Hi-Res Audio',
+    price: 29990,
+    originalPrice: 34990,
+    discount: 14,
+    category: 'Electronics',
+    brand: 'Sony',
+    image: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500',
+    images: ['https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500'],
+    rating: 4.7,
+    reviews: 2180,
+    colors: ['Black', 'Silver'],
+    specifications: {
+      'Battery Life': '30 hours',
+      'Noise Cancellation': 'Yes',
+      'Bluetooth': '5.2',
+      'Weight': '250g'
+    },
+    stock_quantity: 78,
+    featured: false,
+    freeDelivery: true,
+    specialOffers: ['Free Carrying Case'],
+    created_at: new Date().toISOString()
+  },
+
+  // Clothing - Women's
+  {
+    id: 'prod-4',
+    name: 'Designer Cotton Kurti',
+    description: 'Elegant floral print kurti with beautiful embroidery, perfect for casual wear',
+    price: 599,
+    originalPrice: 1299,
+    discount: 54,
+    category: 'Clothing',
+    brand: 'Libas',
+    image: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=500',
+    images: ['https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=500'],
+    rating: 4.3,
+    reviews: 892,
+    colors: ['Pink', 'Blue', 'Yellow', 'White'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    specifications: {
+      'Material': '100% Cotton',
+      'Pattern': 'Floral Print',
+      'Occasion': 'Casual',
+      'Sleeve': '3/4 Sleeve'
+    },
+    stock_quantity: 156,
+    featured: true,
+    freeDelivery: true,
+    specialOffers: ['Buy 2 Get 1 Free', 'Combo Discount'],
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'prod-5',
+    name: 'Banarasi Silk Saree',
+    description: 'Traditional Banarasi silk saree with golden zari work, includes blouse piece',
+    price: 2499,
+    originalPrice: 4999,
+    discount: 50,
+    category: 'Clothing',
+    brand: 'Kanjivaram Silks',
+    image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500',
+    images: ['https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500'],
+    rating: 4.6,
+    reviews: 634,
+    colors: ['Red', 'Green', 'Blue', 'Purple'],
+    sizes: ['Free Size'],
+    specifications: {
+      'Material': 'Pure Silk',
+      'Work': 'Zari Work',
+      'Length': '5.5 meters',
+      'Blouse': 'Included'
+    },
+    stock_quantity: 42,
+    featured: true,
+    freeDelivery: true,
+    specialOffers: ['Festival Special', 'Free Shipping'],
+    created_at: new Date().toISOString()
+  },
+
+  // Home & Kitchen
+  {
+    id: 'prod-6',
+    name: 'Prestige Omega Deluxe Granite Fry Pan',
+    description: 'Non-stick granite finish fry pan with induction base, 24cm diameter',
+    price: 899,
+    originalPrice: 1495,
+    discount: 40,
+    category: 'Home & Kitchen',
+    brand: 'Prestige',
+    image: 'https://images.unsplash.com/photo-1584990347449-39b0e3e328c5?w=500',
+    images: ['https://images.unsplash.com/photo-1584990347449-39b0e3e328c5?w=500'],
+    rating: 4.4,
+    reviews: 1245,
+    colors: ['Black', 'Gray'],
+    specifications: {
+      'Size': '24cm',
+      'Material': 'Aluminum with Granite Coating',
+      'Induction Compatible': 'Yes',
+      'Dishwasher Safe': 'Yes'
+    },
+    stock_quantity: 234,
+    featured: false,
+    freeDelivery: true,
+    specialOffers: ['Kitchen Combo Offer'],
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'prod-7',
+    name: 'Philips Air Fryer HD9252/90',
+    description: '4.1L capacity, Rapid Air technology, digital display, 1400W',
+    price: 8999,
+    originalPrice: 12995,
+    discount: 31,
+    category: 'Home & Kitchen',
+    brand: 'Philips',
+    image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=500',
+    images: ['https://images.unsplash.com/photo-1585515320310-259814833e62?w=500'],
+    rating: 4.5,
+    reviews: 3890,
+    colors: ['Black'],
+    specifications: {
+      'Capacity': '4.1 Liters',
+      'Power': '1400W',
+      'Temperature Range': '80-200°C',
+      'Timer': '60 minutes'
+    },
+    stock_quantity: 67,
+    featured: true,
+    freeDelivery: true,
+    specialOffers: ['Recipe Book Included', '2 Year Warranty'],
+    created_at: new Date().toISOString()
+  },
+
+  // Beauty
+  {
+    id: 'prod-8',
+    name: 'Lakme 9 to 5 Primer + Matte Lipstick',
+    description: 'Long-lasting matte finish lipstick with primer, 3.6g',
+    price: 399,
+    originalPrice: 599,
+    discount: 33,
+    category: 'Beauty',
+    brand: 'Lakme',
+    image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500',
+    images: ['https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500'],
+    rating: 4.2,
+    reviews: 2567,
+    colors: ['Rosy Sunday', 'Crimson Silk', 'Pink Affair', 'Berry Base'],
+    specifications: {
+      'Weight': '3.6g',
+      'Finish': 'Matte',
+      'Long Lasting': 'Yes',
+      'Transfer Proof': 'Yes'
+    },
+    stock_quantity: 445,
+    featured: false,
+    freeDelivery: false,
+    specialOffers: ['Buy 3 Get 1 Free'],
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'prod-9',
+    name: 'Mamaearth Onion Hair Oil',
+    description: 'Hair oil with onion, biotin & redensyl for hair fall control, 250ml',
+    price: 449,
+    originalPrice: 599,
+    discount: 25,
+    category: 'Beauty',
+    brand: 'Mamaearth',
+    image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500',
+    images: ['https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500'],
+    rating: 4.3,
+    reviews: 8923,
+    colors: ['Natural'],
+    specifications: {
+      'Volume': '250ml',
+      'Key Ingredients': 'Onion, Biotin, Redensyl',
+      'Suitable For': 'All Hair Types',
+      'Dermatologically Tested': 'Yes'
+    },
+    stock_quantity: 678,
+    featured: true,
+    freeDelivery: true,
+    specialOffers: ['Bundle & Save'],
+    created_at: new Date().toISOString()
+  },
+
+  // Sports & Fitness
+  {
+    id: 'prod-10',
+    name: 'Nike Revolution 6 Running Shoes',
+    description: 'Lightweight running shoes with soft foam cushioning and breathable design',
+    price: 3495,
+    originalPrice: 4495,
+    discount: 22,
+    category: 'Sports',
+    brand: 'Nike',
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500',
+    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'],
+    rating: 4.4,
+    reviews: 1823,
+    colors: ['Black', 'White', 'Blue', 'Red'],
+    sizes: ['6', '7', '8', '9', '10', '11'],
+    specifications: {
+      'Type': 'Running Shoes',
+      'Cushioning': 'Soft Foam',
+      'Upper Material': 'Mesh',
+      'Sole': 'Rubber'
+    },
+    stock_quantity: 89,
+    featured: true,
+    freeDelivery: true,
+    specialOffers: ['Sports Gear Combo'],
+    created_at: new Date().toISOString()
+  }
+];

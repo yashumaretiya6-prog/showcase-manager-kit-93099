@@ -5,6 +5,7 @@ import { useProducts } from '@/context/ProductContext';
 import { Product } from '@/types/product';
 import { ProductManagementHeader } from '@/components/admin/ProductManagementHeader';
 import { AddProductDialog } from '@/components/admin/AddProductDialog';
+import { ProductFormAdvanced } from '@/components/admin/ProductFormAdvanced';
 import { ProductList } from '@/components/admin/ProductList';
 import { ProductService } from '@/services/productService';
 import { isClothingCategory, getClothingSizes } from '@/utils/categoryUtils';

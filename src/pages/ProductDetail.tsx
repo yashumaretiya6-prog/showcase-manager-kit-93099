@@ -201,13 +201,13 @@ const ProductDetail: React.FC = () => {
 
         <ProductInfo product={product} />
         
-        <UrgencyIndicators productId={product.id} />
+        <UrgencyIndicators product={product} />
         
         {product.bulkDiscounts && product.bulkDiscounts.length > 0 && (
           <BulkDiscountBanner bulkDiscounts={product.bulkDiscounts} currentQuantity={quantity} />
         )}
         
-        <Buy2Get1FreeOffer />
+        <Buy2Get1FreeOffer product={product} />
         
         <TrustIndicators />
 

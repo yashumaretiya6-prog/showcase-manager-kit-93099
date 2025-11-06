@@ -85,6 +85,27 @@ export interface Product {
   emiAvailable?: boolean;
   codAvailable?: boolean;
   reviews_data?: Review[];
+  
+  // New dynamic fields
+  highlights?: string[];
+  faqs?: Array<{
+    question: string;
+    answer: string;
+  }>;
+  urgencyConfig?: {
+    showBuyersToday?: boolean;
+    buyersCount?: number;
+    showStockLeft?: boolean;
+    stockLeftCount?: number;
+    showDailySale?: boolean;
+    saleEndTime?: string;
+  };
+  offerConfig?: {
+    showBuy2Get1?: boolean;
+    customOfferText?: string;
+    offerBadgeText?: string;
+  };
+  categoryAttributes?: Record<string, any>;
 }
 
 export interface CartItem {
