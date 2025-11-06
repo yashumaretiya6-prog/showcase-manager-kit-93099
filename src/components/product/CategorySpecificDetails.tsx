@@ -2,6 +2,12 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Product } from '@/types/product';
 import { Shield, Award, Zap } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 interface CategorySpecificDetailsProps {
   product: Product;
@@ -140,19 +146,23 @@ export const CategorySpecificDetails: React.FC<CategorySpecificDetailsProps> = (
   // Default for other categories
   return (
     <div className="px-4">
-      <Card className="p-4">
-        <div className="flex items-start gap-3">
-          <Zap className="w-5 h-5 text-primary mt-0.5" />
-          <div>
-            <h3 className="font-semibold mb-2">Product Highlights</h3>
-            <div className="space-y-1 text-sm text-muted-foreground">
+      <Accordion type="single" defaultValue="highlights" collapsible className="w-full">
+        <AccordionItem value="highlights" className="border-b border-border">
+          <AccordionTrigger className="hover:no-underline py-4">
+            <div className="flex items-center gap-2">
+              <Zap className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold text-base text-foreground">Product Highlights</h3>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-1 text-sm text-muted-foreground pb-4">
               <p>• Premium quality product</p>
               <p>• Satisfaction guaranteed</p>
               <p>• Fast and secure delivery</p>
             </div>
-          </div>
-        </div>
-      </Card>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 };
