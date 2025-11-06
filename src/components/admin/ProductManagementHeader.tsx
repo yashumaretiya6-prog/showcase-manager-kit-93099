@@ -63,12 +63,15 @@ export const ProductManagementHeader = ({
             onChange={(e) => onFiltersChange({ search: e.target.value })}
           />
         </div>
-        <Select value={filters.category} onValueChange={(value) => onFiltersChange({ category: value })}>
+        <Select 
+          value={filters.category || "all"} 
+          onValueChange={(value) => onFiltersChange({ category: value === "all" ? "" : value })}
+        >
           <SelectTrigger>
             <SelectValue placeholder="All Categories" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Categories</SelectItem>
+            <SelectItem value="all">All Categories</SelectItem>
             {categories.map((cat) => (
               <SelectItem key={cat} value={cat}>{cat}</SelectItem>
             ))}
