@@ -193,7 +193,10 @@ const ProductDetail: React.FC = () => {
         <ProductImageGallery 
           productName={product.name} 
           mainImage={currentVariant?.images?.[0] || product.image} 
-          additionalImages={currentVariant?.images || product.images} 
+          additionalImages={currentVariant?.images || product.images}
+          product={product}
+          rating={product.rating}
+          reviewCount={product.reviews}
         />
 
         <ProductInfo product={product} />
