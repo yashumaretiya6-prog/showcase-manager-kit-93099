@@ -45,26 +45,26 @@ export const UrgencyIndicators: React.FC<UrgencyIndicatorsProps> = ({ productId 
   const formatTime = (num: number) => num.toString().padStart(2, '0');
 
   return (
-    <div className="p-4 py-2 space-y-2">
+    <div className="p-4 py-1.5 space-y-1.5">
       {/* Daily Sale Timer */}
-      <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-2 rounded-lg">
-        <div className="flex items-center gap-1.5 mb-0.5">
-          <Clock className="h-3 w-3" />
-          <span className="text-xs font-medium">Daily Sale Ends In:</span>
+      <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-1.5 rounded-lg">
+        <div className="flex items-center gap-1 mb-0.5">
+          <Clock className="h-2.5 w-2.5" />
+          <span className="text-[10px] font-medium">Daily Sale Ends In:</span>
         </div>
-        <div className="text-base font-bold">
+        <div className="text-sm font-bold">
           {formatTime(timeLeft.hours)}:{formatTime(timeLeft.minutes)}:{formatTime(timeLeft.seconds)}
         </div>
       </div>
 
       {/* Social Proof & Stock */}
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
-          <Users className="h-3 w-3" />
+      <div className="flex items-center justify-between gap-1.5">
+        <div className="flex items-center gap-0.5 text-[10px] text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded">
+          <Users className="h-2.5 w-2.5" />
           <span className="font-medium">{buyerCount} bought today</span>
         </div>
-        <div className="flex items-center gap-1 text-xs text-red-600 bg-red-50 px-2 py-1 rounded">
-          <TrendingUp className="h-3 w-3" />
+        <div className="flex items-center gap-0.5 text-[10px] text-red-600 bg-red-50 px-1.5 py-0.5 rounded">
+          <TrendingUp className="h-2.5 w-2.5" />
           <span className="font-medium">Only {stockLeft} left!</span>
         </div>
       </div>
