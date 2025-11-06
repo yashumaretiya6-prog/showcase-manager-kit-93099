@@ -94,7 +94,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
         />
 
         {/* Overlay Action Buttons */}
-        <div className="absolute top-2 right-4 flex flex-col gap-2">
+        <div className="absolute top-1 right-1 sm:top-2 sm:right-2 md:right-4 flex flex-col gap-1 sm:gap-2">
           {/* Rating Badge */}
           {rating && (
             <div className="flex items-center gap-1 bg-background/95 backdrop-blur-sm px-2 py-1 rounded-full shadow-lg text-xs">
@@ -112,7 +112,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
               variant="ghost"
               size="icon"
               onClick={handleWishlistToggle}
-              className="h-8 w-8 rounded-full bg-background/95 backdrop-blur-sm hover:bg-background shadow-lg"
+              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-background/95 backdrop-blur-sm hover:bg-background shadow-lg"
             >
               <Heart 
                 className={`h-4 w-4 ${isWishlisted ? 'fill-red-500 text-red-500' : ''}`}
@@ -125,7 +125,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
             variant="ghost"
             size="icon"
             onClick={handleShare}
-            className="h-8 w-8 rounded-full bg-background/95 backdrop-blur-sm hover:bg-background shadow-lg"
+            className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-background/95 backdrop-blur-sm hover:bg-background shadow-lg"
           >
             <Share2 className="h-4 w-4" />
           </Button>
