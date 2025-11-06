@@ -28,7 +28,49 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
       images: ["https://images.unsplash.com/photo-1583391733981-8b1b29bdd2ca?w=800"],
       category: "Kurtis",
       brand: "Store Brand",
-      description: "Elegant embroidered kurti with traditional patterns. Perfect for festive occasions.",
+      description: "Elegant embroidered kurti with traditional patterns. Perfect for festive occasions. Features intricate embroidery work and comfortable fabric for all-day wear.",
+      specifications: {
+        'Design & Style': {
+          'Pattern': 'Embroidered',
+          'Sleeve Length': '3/4 Sleeve',
+          'Neck Type': 'V-Neck',
+          'Length': 'Calf Length',
+          'Occasion': 'Festive, Party',
+          'Ornamentation': 'Thread Work, Sequins'
+        },
+        'Fabric & Material': {
+          'Fabric': 'Rayon',
+          'Lining': 'Cotton',
+          'Wash Care': 'Hand wash or gentle machine wash',
+          'Fade Resistant': 'Yes'
+        },
+        'General': {
+          'Brand': 'Store Brand',
+          'Model': 'KRT-001',
+          'Country of Origin': 'India',
+          'Available Sizes': 'S, M, L, XL, XXL'
+        }
+      },
+      keyFeatures: [
+        'Intricate thread work embroidery',
+        'Comfortable rayon fabric',
+        'Perfect for festive occasions',
+        'Easy to maintain',
+        'Flattering fit for all body types'
+      ],
+      warrantyDetails: {
+        duration: '15 days return policy',
+        coverage: [
+          'Size mismatch',
+          'Manufacturing defects',
+          'Fabric quality issues'
+        ],
+        terms: [
+          'Product must be unworn and unwashed',
+          'Original packaging required',
+          'Tags should be intact'
+        ]
+      },
       rating: 4.7,
       reviews: 189,
       freeDelivery: true,

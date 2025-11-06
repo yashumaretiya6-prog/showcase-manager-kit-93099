@@ -48,7 +48,13 @@ export interface Product {
   category: string;
   brand: string;
   description: string;
-  specifications?: Record<string, any>;
+  specifications?: Record<string, Record<string, any>> | Record<string, any>;
+  keyFeatures?: string[];
+  warrantyDetails?: {
+    duration?: string;
+    coverage?: string[];
+    terms?: string[];
+  };
   rating: number;
   reviews: number;
   freeDelivery: boolean;

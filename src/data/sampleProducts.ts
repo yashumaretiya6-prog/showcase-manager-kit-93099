@@ -11,7 +11,44 @@ export const sampleProducts: Product[] = [
     images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800', 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800'],
     category: 'Clothing',
     brand: 'StyleCraft',
-    description: 'Premium quality cotton t-shirt with modern fit',
+    description: 'Premium quality cotton t-shirt with modern fit. Made from 100% organic cotton, this t-shirt offers superior comfort and breathability. Perfect for casual wear or layering.',
+    specifications: {
+      'Fabric & Care': {
+        'Fabric': '100% Cotton',
+        'Pattern': 'Solid',
+        'Sleeve Length': 'Short Sleeves',
+        'Neck': 'Round Neck',
+        'Fit': 'Regular Fit',
+        'Wash Care': 'Machine wash cold, tumble dry low'
+      },
+      'General': {
+        'Brand': 'StyleCraft',
+        'Model': 'TSH-001',
+        'Occasion': 'Casual',
+        'Season': 'All Season',
+        'Country of Origin': 'India'
+      }
+    },
+    keyFeatures: [
+      '100% organic cotton fabric',
+      'Pre-shrunk for lasting fit',
+      'Tagless design for comfort',
+      'Reinforced shoulder seams',
+      'Available in multiple colors'
+    ],
+    warrantyDetails: {
+      duration: '30 days quality guarantee',
+      coverage: [
+        'Manufacturing defects',
+        'Fabric quality issues',
+        'Color bleeding or fading'
+      ],
+      terms: [
+        'Product must be unused and in original condition',
+        'Original tags must be attached',
+        'Valid proof of purchase required'
+      ]
+    },
     rating: 4.5,
     reviews: 128,
     freeDelivery: true,
