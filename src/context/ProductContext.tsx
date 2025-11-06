@@ -34,7 +34,7 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
       freeDelivery: true,
       specialOffers: ["Buy 2 Get 1 FREE"],
       sizes: ["S", "M", "L", "XL", "XXL"],
-      stock: 6,
+      stock_quantity: 6,
       featured: true,
     },
   ]);

@@ -1,27 +1,40 @@
-import { Clock } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { Clock, TrendingUp, Users } from 'lucide-react';
 
 interface UrgencyIndicatorsProps {
   productId: string;
 }
 
-export const UrgencyIndicators = ({ productId }: UrgencyIndicatorsProps) => {
-  const [timeLeft, setTimeLeft] = useState({ hours: 2, minutes: 5, seconds: 54 });
+export const UrgencyIndicators: React.FC<UrgencyIndicatorsProps> = ({ productId }) => {
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 2,
+    minutes: 15,
+    seconds: 0
+  });
 
+  // Generate realistic numbers based on product ID
+  const buyerCount = Math.floor(Math.abs(productId.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % 50) + 10;
+  const stockLeft = Math.floor(Math.abs(productId.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % 8) + 3;
+  
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         let { hours, minutes, seconds } = prev;
-        seconds--;
-        if (seconds < 0) {
-          seconds = 59;
+        
+        if (seconds > 0) {
+          seconds--;
+        } else if (minutes > 0) {
           minutes--;
-          if (minutes < 0) {
-            minutes = 59;
-            hours--;
-            if (hours < 0) hours = 0;
-          }
+          seconds = 59;
+        } else if (hours > 0) {
+          hours--;
+          minutes = 59;
+          seconds = 59;
+        } else {
+          // Reset to next day sale
+          return { hours: 23, minutes: 59, seconds: 59 };
         }
+        
         return { hours, minutes, seconds };
       });
     }, 1000);
@@ -29,28 +42,30 @@ export const UrgencyIndicators = ({ productId }: UrgencyIndicatorsProps) => {
     return () => clearInterval(timer);
   }, []);
 
+  const formatTime = (num: number) => num.toString().padStart(2, '0');
+
   return (
-    <div className="container mx-auto px-4 py-4">
-      <div className="bg-accent text-accent-foreground rounded-lg p-4 mb-4">
-        <div className="flex items-center gap-2 mb-2">
+    <div className="p-4 space-y-3">
+      {/* Daily Sale Timer */}
+      <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-3 rounded-lg">
+        <div className="flex items-center gap-2 mb-1">
           <Clock className="h-4 w-4" />
-          <span className="font-semibold text-sm">Daily Sale Ends In:</span>
+          <span className="text-sm font-medium">Daily Sale Ends In:</span>
         </div>
-        <div className="text-2xl font-bold">
-          {String(timeLeft.hours).padStart(2, '0')}:
-          {String(timeLeft.minutes).padStart(2, '0')}:
-          {String(timeLeft.seconds).padStart(2, '0')}
+        <div className="text-lg font-bold">
+          {formatTime(timeLeft.hours)}:{formatTime(timeLeft.minutes)}:{formatTime(timeLeft.seconds)}
         </div>
       </div>
 
-      <div className="flex items-center justify-between p-3 bg-secondary rounded-lg">
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-accent">🔥</span>
-          <span className="text-foreground">37 bought today</span>
+      {/* Social Proof & Stock */}
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-1.5 text-sm text-orange-600 bg-orange-50 px-2 py-1 rounded">
+          <Users className="h-4 w-4" />
+          <span className="font-medium">{buyerCount} bought today</span>
         </div>
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-destructive">⚡</span>
-          <span className="text-destructive font-medium">Only 6 left!</span>
+        <div className="flex items-center gap-1.5 text-sm text-red-600 bg-red-50 px-2 py-1 rounded">
+          <TrendingUp className="h-4 w-4" />
+          <span className="font-medium">Only {stockLeft} left!</span>
         </div>
       </div>
     </div>

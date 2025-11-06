@@ -1,21 +1,22 @@
-import { CheckCircle2, RotateCcw, Shield } from "lucide-react";
+import React from 'react';
+import { Shield, RotateCcw, Check } from 'lucide-react';
 
-export const TrustIndicators = () => {
-  const badges = [
-    { icon: CheckCircle2, text: "COD", color: "text-success" },
-    { icon: RotateCcw, text: "Easy Returns", color: "text-success" },
-    { icon: Shield, text: "Secure Payment", color: "text-success" },
-  ];
-
+export const TrustIndicators: React.FC = () => {
   return (
-    <div className="container mx-auto px-4 py-4">
-      <div className="flex gap-4 flex-wrap">
-        {badges.map((badge, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <badge.icon className={`h-4 w-4 ${badge.color}`} />
-            <span className="text-sm text-foreground">{badge.text}</span>
-          </div>
-        ))}
+    <div className="p-4 border-t bg-success/5">
+      <div className="flex items-center justify-between gap-4 text-sm">
+        <div className="flex items-center gap-1.5 text-success">
+          <Check className="h-4 w-4" />
+          <span className="font-medium">COD</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-success">
+          <RotateCcw className="h-4 w-4" />
+          <span className="font-medium">Easy Returns</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-success">
+          <Shield className="h-4 w-4" />
+          <span className="font-medium">Secure Payment</span>
+        </div>
       </div>
     </div>
   );

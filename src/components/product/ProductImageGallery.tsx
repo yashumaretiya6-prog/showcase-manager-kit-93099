@@ -1,71 +1,91 @@
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ProductImageGalleryProps {
+  productName: string;
   mainImage: string;
   additionalImages?: string[];
-  productName: string;
 }
 
-export const ProductImageGallery = ({ mainImage, additionalImages = [], productName }: ProductImageGalleryProps) => {
-  const allImages = [mainImage, ...additionalImages];
-  const [selectedImage, setSelectedImage] = useState(0);
+export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
+  productName,
+  mainImage,
+  additionalImages = []
+}) => {
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  
+  const images = additionalImages.length > 0 
+    ? [mainImage, ...additionalImages.filter(Boolean)] 
+    : [mainImage];
 
   const nextImage = () => {
-    setSelectedImage((prev) => (prev + 1) % allImages.length);
+    setSelectedImageIndex((prev) => (prev + 1) % images.length);
   };
 
   const prevImage = () => {
-    setSelectedImage((prev) => (prev - 1 + allImages.length) % allImages.length);
+    setSelectedImageIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="relative aspect-[3/4] bg-card rounded-lg overflow-hidden shadow-[var(--shadow-card)] max-w-lg mx-auto">
+    <div className="bg-muted/30 p-2 sm:p-4">
+      <div className="relative aspect-square bg-background rounded-lg overflow-hidden mb-2 sm:mb-4">
         <img
-          src={allImages[selectedImage]}
-          alt={`${productName} - Image ${selectedImage + 1}`}
-          className="w-full h-full object-cover"
+          src={images[selectedImageIndex]}
+          alt={productName}
+          className="w-full h-full object-contain"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x400?text=No+Image';
+          }}
         />
-        {allImages.length > 1 && (
+        
+        {images.length > 1 && (
           <>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-card/80 hover:bg-card"
+            <button
               onClick={prevImage}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background p-2 rounded-full shadow-lg transition-colors"
             >
-              <ChevronLeft className="h-6 w-6" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-card/80 hover:bg-card"
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
               onClick={nextImage}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background p-2 rounded-full shadow-lg transition-colors"
             >
-              <ChevronRight className="h-6 w-6" />
-            </Button>
+              <ChevronRight className="h-4 w-4" />
+            </button>
+            
+            {/* Image indicators */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedImageIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    index === selectedImageIndex ? 'bg-primary' : 'bg-muted'
+                  }`}
+                />
+              ))}
+            </div>
           </>
         )}
       </div>
-
-      {allImages.length > 1 && (
-        <div className="flex gap-2 justify-center mt-4">
-          {allImages.map((image, index) => (
+      
+      {images.length > 1 && (
+        <div className="flex gap-1 sm:gap-2 justify-center overflow-x-auto pb-2">
+          {images.map((image, index) => (
             <button
               key={index}
-              onClick={() => setSelectedImage(index)}
-              className={`w-16 h-20 rounded border-2 overflow-hidden transition-all ${
-                selectedImage === index
-                  ? "border-primary"
-                  : "border-border hover:border-primary/50"
+              className={`w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-colors flex-shrink-0 ${
+                index === selectedImageIndex ? 'border-primary' : 'border-border'
               }`}
+              onClick={() => setSelectedImageIndex(index)}
             >
               <img
                 src={image}
-                alt={`${productName} thumbnail ${index + 1}`}
+                alt={`${productName} ${index + 1}`}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://via.placeholder.com/64x64?text=No+Image';
+                }}
               />
             </button>
           ))}
