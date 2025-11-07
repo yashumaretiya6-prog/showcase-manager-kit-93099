@@ -27,6 +27,25 @@ export const mockProducts: Product[] = [
     featured: true,
     freeDelivery: true,
     specialOffers: ['Free Galaxy Buds', 'Extended Warranty'],
+    highlights: [
+      'Latest Snapdragon 8 Gen 3 processor for ultimate performance',
+      '200MP camera with AI-enhanced photography',
+      'All-day 5000mAh battery with fast charging',
+      'Premium titanium design with Gorilla Glass protection',
+      '1 Year manufacturer warranty included'
+    ],
+    urgencyConfig: {
+      showBuyersToday: true,
+      buyersCount: 87,
+      showStockLeft: true,
+      stockLeftCount: 4,
+      showDailySale: true
+    },
+    faqs: [
+      { question: 'Is this phone 5G compatible?', answer: 'Yes, the Samsung Galaxy S24 Ultra supports 5G connectivity on all major networks.' },
+      { question: 'Does it come with a charger?', answer: 'The box includes a USB-C cable. Fast charger is sold separately.' },
+      { question: 'What is the warranty period?', answer: '1 year manufacturer warranty with extended warranty options available.' }
+    ],
     created_at: new Date().toISOString()
   },
   {
@@ -108,6 +127,30 @@ export const mockProducts: Product[] = [
     featured: true,
     freeDelivery: true,
     specialOffers: ['Buy 2 Get 1 Free', 'Combo Discount'],
+    highlights: [
+      'Premium 100% cotton fabric for all-day comfort',
+      'Beautiful floral print with intricate embroidery',
+      'Perfect for casual and semi-formal occasions',
+      'Easy to wash and maintain',
+      'Available in 5 sizes and 4 stunning colors'
+    ],
+    urgencyConfig: {
+      showBuyersToday: true,
+      buyersCount: 59,
+      showStockLeft: false,
+      showDailySale: true
+    },
+    offerConfig: {
+      showBuy2Get1: true,
+      customOfferText: 'Limited Time Fashion Sale!',
+      offerBadgeText: 'HOT DEAL'
+    },
+    faqs: [
+      { question: 'What is the fabric quality?', answer: '100% pure cotton with premium finishing for lasting comfort and durability.' },
+      { question: 'Is the color as shown in the image?', answer: 'Yes, we ensure accurate color representation. Slight variations may occur due to screen settings.' },
+      { question: 'How should I wash this kurti?', answer: 'Machine wash cold with similar colors. Do not bleach. Iron on medium heat.' },
+      { question: 'Does it include a bottom?', answer: 'This is a kurti only. Matching bottoms can be purchased separately from our collection.' }
+    ],
     created_at: new Date().toISOString()
   },
   {
@@ -272,6 +315,20 @@ export const mockProducts: Product[] = [
     featured: true,
     freeDelivery: true,
     specialOffers: ['Sports Gear Combo'],
+    highlights: [
+      'Lightweight mesh upper for maximum breathability',
+      'Soft foam midsole for responsive cushioning',
+      'Durable rubber outsole for excellent traction',
+      'Perfect for daily running and gym workouts',
+      'Nike quality guarantee with authentic product'
+    ],
+    urgencyConfig: {
+      showBuyersToday: true,
+      buyersCount: 43,
+      showStockLeft: true,
+      stockLeftCount: 6,
+      showDailySale: false
+    },
     created_at: new Date().toISOString()
   }
 ];

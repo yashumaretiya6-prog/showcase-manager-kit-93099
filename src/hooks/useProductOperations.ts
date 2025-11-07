@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Product } from '@/types/product';
 import { ProductService } from '@/services/productService';
+import { mockProducts } from '@/data/mockProducts';
 
 const PRODUCTS_PER_PAGE = 20;
 
@@ -10,7 +11,7 @@ export const useProductOperations = () => {
   const [hasMore, setHasMore] = useState(true);
   const [offset, setOffset] = useState(0);
 
-  // Initialize products - load from Supabase only
+  // Initialize products - load from Supabase or fallback to mock data
   const initializeProducts = useCallback(async () => {
     try {
       setLoading(true);
@@ -24,15 +25,15 @@ export const useProductOperations = () => {
         setOffset(existingProducts.length);
         setHasMore(existingProducts.length === PRODUCTS_PER_PAGE);
       } else {
-        console.log('No products found in database');
-        setProducts([]);
-        setOffset(0);
+        console.log('No products in database, using mock data');
+        setProducts(mockProducts);
+        setOffset(mockProducts.length);
         setHasMore(false);
       }
     } catch (error) {
-      console.error('Failed to initialize products:', error);
-      setProducts([]);
-      setOffset(0);
+      console.error('Failed to initialize products, using mock data:', error);
+      setProducts(mockProducts);
+      setOffset(mockProducts.length);
       setHasMore(false);
     } finally {
       setLoading(false);
